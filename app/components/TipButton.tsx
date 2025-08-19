@@ -48,7 +48,7 @@ export default function TipButton({ creatorAddress, creatorName, onTipSent }: Ti
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="bg-primary hover:bg-primary/90 text-white px-lg py-md rounded-lg font-semibold transition-all duration-base ease-in-out transform hover:scale-105 shadow-card"
+        className="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-200 ease-in-out transform hover:scale-105 shadow-card animate-pulse"
       >
         💰 Tip {creatorName}
       </button>
@@ -105,9 +105,21 @@ export default function TipButton({ creatorAddress, creatorName, onTipSent }: Ti
       <button
         onClick={handleTip}
         disabled={isLoading || !amount || parseFloat(amount) <= 0}
-        className="w-full bg-accent hover:bg-accent/90 disabled:bg-text-secondary/20 disabled:text-text-secondary text-white py-md rounded-lg font-semibold transition-colors duration-base"
+        className="w-full bg-accent hover:bg-accent/90 disabled:bg-text-secondary/20 disabled:text-text-secondary text-white py-3 rounded-lg font-semibold transition-all duration-200"
       >
-        {isLoading ? 'Sending...' : `Send $${amount} USDC`}
+        {isLoading ? (
+          <div className="flex items-center justify-center">
+            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+            <span>Sending...</span>
+          </div>
+        ) : (
+          <span className="flex items-center justify-center">
+            <span className="mr-2">Send ${amount} USDC</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </span>
+        )}
       </button>
     </div>
   );

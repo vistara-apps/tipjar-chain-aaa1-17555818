@@ -27,9 +27,50 @@ interface CreatorProfileProps {
   tips: Tip[];
 }
 
-export default function CreatorProfile({ creator, tips }: CreatorProfileProps) {
+export default function CreatorProfile(props?: CreatorProfileProps) {
   const { context } = useMiniKit();
   const [totalTips, setTotalTips] = useState(0);
+  const [creator, setCreator] = useState<Creator>({
+    farcasterId: 'creator123',
+    baseWalletAddress: '0x1234567890abcdef1234567890abcdef12345678',
+    displayName: 'Demo Creator'
+  });
+  const [tips, setTips] = useState<Tip[]>([]);
+
+  useEffect(() => {
+    // If props are provided, use them; otherwise use mock data
+    if (props?.creator) {
+      setCreator(props.creator);
+    }
+    
+    if (props?.tips) {
+      setTips(props.tips);
+    } else {
+      // Mock data for demonstration
+      setTips([
+        {
+          tipId: '1',
+          senderFarcasterId: 'user456',
+          senderWalletAddress: '0xabcdef1234567890abcdef1234567890abcdef12',
+          receiverWalletAddress: creator.baseWalletAddress,
+          amount: 5,
+          currency: 'USDC',
+          transactionHash: '0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef',
+          timestamp: new Date().toISOString()
+        },
+        {
+          tipId: '2',
+          senderFarcasterId: 'user789',
+          senderWalletAddress: '0x9876543210fedcba9876543210fedcba98765432',
+          receiverWalletAddress: creator.baseWalletAddress,
+          amount: 10,
+          currency: 'USDC',
+          transactionHash: '0xfedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210',
+          timestamp: new Date(Date.now() - 86400000).toISOString() // 1 day ago
+        }
+      ]);
+    }
+  }, [props]);
 
   useEffect(() => {
     const total = tips.reduce((sum, tip) => sum + tip.amount, 0);

@@ -1,4 +1,3 @@
-
 'use client';
 
 import {
@@ -19,7 +18,7 @@ import {
   WalletDropdownDisconnect,
 } from '@coinbase/onchainkit/wallet';
 import { useEffect, useState, useCallback } from 'react';
-import { CreatorProfile } from './components/CreatorProfile';
+import CreatorProfile from './components/CreatorProfile';
 import { TipFlow } from './components/TipFlow';
 import { TransactionHistory } from './components/TransactionHistory';
 
