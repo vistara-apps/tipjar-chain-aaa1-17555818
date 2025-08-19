@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState } from 'react';
@@ -67,23 +66,40 @@ export function TipFlow() {
   if (tipState.step === 'success') {
     return (
       <div className="card text-center animate-scale-in">
-        <div className="w-16 h-16 bg-accent rounded-full mx-auto mb-4 flex items-center justify-center">
-          <span className="text-2xl">✓</span>
+        <div className="w-20 h-20 bg-accent rounded-full mx-auto mb-6 flex items-center justify-center shadow-lg animate-pulse">
+          <svg className="w-10 h-10 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M20 6L9 17l-5-5"/>
+          </svg>
         </div>
-        <h2 className="text-heading mb-2">Tip Sent Successfully!</h2>
-        <p className="text-body text-text-secondary mb-4">
-          Your ${tipState.amount} USDC tip has been sent on-chain.
+        <h2 className="text-heading mb-3">Tip Sent Successfully!</h2>
+        <div className="bg-accent/10 rounded-lg p-4 mb-5 inline-block">
+          <span className="text-accent text-xl font-bold">${tipState.amount} USDC</span>
+        </div>
+        <p className="text-body text-text-secondary mb-5">
+          Your tip has been successfully sent on-chain and will be received shortly.
         </p>
         {tipState.transactionHash && (
-          <div className="bg-bg rounded-lg p-3 mb-4">
-            <div className="text-caption text-text-secondary mb-1">Transaction Hash</div>
+          <div className="bg-bg rounded-lg p-4 mb-5">
+            <div className="text-caption text-text-secondary mb-2">Transaction Hash</div>
             <div className="font-mono text-xs text-accent break-all">
               {tipState.transactionHash}
             </div>
+            <button 
+              className="mt-2 text-xs text-text-secondary hover:text-accent transition-colors duration-200"
+              onClick={() => window.open(`https://basescan.org/tx/${tipState.transactionHash}`, '_blank')}
+            >
+              View on BaseScan ↗
+            </button>
           </div>
         )}
-        <button onClick={resetTip} className="btn-primary w-full">
-          Send Another Tip
+        <button onClick={resetTip} className="btn-primary w-full group">
+          <span className="flex items-center justify-center">
+            <svg className="w-5 h-5 mr-2 group-hover:animate-pulse" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0"/>
+              <path d="M12 8v4l3 3"/>
+            </svg>
+            Send Another Tip
+          </span>
         </button>
       </div>
     );
@@ -92,16 +108,30 @@ export function TipFlow() {
   if (tipState.step === 'error') {
     return (
       <div className="card text-center animate-scale-in">
-        <div className="w-16 h-16 bg-red-500 rounded-full mx-auto mb-4 flex items-center justify-center">
-          <span className="text-2xl">✗</span>
+        <div className="w-20 h-20 bg-red-500 rounded-full mx-auto mb-6 flex items-center justify-center shadow-lg">
+          <svg className="w-10 h-10 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <line x1="15" y1="9" x2="9" y2="15" />
+            <line x1="9" y1="9" x2="15" y2="15" />
+          </svg>
         </div>
-        <h2 className="text-heading mb-2">Transaction Failed</h2>
-        <p className="text-body text-text-secondary mb-4">
-          {tipState.error}
-        </p>
-        <button onClick={resetTip} className="btn-primary w-full">
-          Try Again
-        </button>
+        <h2 className="text-heading mb-3">Transaction Failed</h2>
+        <div className="bg-red-500/10 rounded-lg p-4 mb-5">
+          <p className="text-red-400">
+            {tipState.error || "There was an error processing your transaction. Please try again."}
+          </p>
+        </div>
+        <div className="flex space-x-3">
+          <button 
+            onClick={() => window.open('https://help.base.org', '_blank')}
+            className="flex-1 bg-bg hover:bg-surface text-text-primary py-3 rounded-lg font-medium transition-all duration-200 border border-white/10"
+          >
+            Get Help
+          </button>
+          <button onClick={resetTip} className="flex-1 btn-primary">
+            Try Again
+          </button>
+        </div>
       </div>
     );
   }
@@ -109,11 +139,26 @@ export function TipFlow() {
   if (tipState.step === 'processing') {
     return (
       <div className="card text-center animate-scale-in">
-        <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full mx-auto mb-4 animate-spin"></div>
-        <h2 className="text-heading mb-2">Processing Transaction</h2>
-        <p className="text-body text-text-secondary">
+        <div className="relative w-20 h-20 mx-auto mb-6">
+          <div className="absolute inset-0 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+          <div className="absolute inset-2 border-4 border-accent border-b-transparent rounded-full animate-spin" style={{ animationDirection: 'reverse', animationDuration: '1.5s' }}></div>
+          <div className="absolute inset-0 flex items-center justify-center">
+            <svg className="w-8 h-8 text-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+            </svg>
+          </div>
+        </div>
+        <h2 className="text-heading mb-3">Processing Transaction</h2>
+        <p className="text-body text-text-secondary mb-4">
           Please confirm the transaction in your wallet and wait for confirmation.
         </p>
+        <div className="bg-bg rounded-lg p-3 text-left">
+          <div className="text-caption text-text-secondary mb-1">Transaction Status</div>
+          <div className="flex items-center text-accent">
+            <div className="w-2 h-2 bg-accent rounded-full mr-2 animate-pulse"></div>
+            <span>Waiting for wallet confirmation...</span>
+          </div>
+        </div>
       </div>
     );
   }

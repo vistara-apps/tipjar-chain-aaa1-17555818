@@ -1,4 +1,3 @@
-
 module.exports = {
   content: ['./app/**/*.{js,ts,jsx,tsx,mdx}'],
   theme: {
@@ -28,6 +27,8 @@ module.exports = {
         'fade-in': 'fadeIn 200ms ease-in-out',
         'scale-in': 'scaleIn 200ms ease-in-out',
         'slide-up': 'slideUp 200ms ease-in-out',
+        'pulse': 'pulse 2s ease-in-out infinite',
+        'shimmer': 'shimmer 2s infinite linear',
       },
     },
   },
